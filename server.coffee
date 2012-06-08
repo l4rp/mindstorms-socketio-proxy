@@ -26,4 +26,8 @@ requestHandler = (req, res) ->
   #res.end "HELLO! #{filename}"
 
 server = http.createServer requestHandler
+io = require('socket.io').listen(server)
 server.listen 8080
+
+io.sockets.on 'connection', (socket) ->
+  socket.emit 'welcome'
