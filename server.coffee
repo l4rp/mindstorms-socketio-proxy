@@ -32,6 +32,7 @@ requestHandler = (req, res) ->
 
 server = http.createServer requestHandler
 io = require('socket.io').listen(server)
+io.set 'log level', 1
 server.listen 8080
 
 functions = (key for key of nxt when typeof nxt[key] is 'function' and key.match /^[a-z_]+$/)
