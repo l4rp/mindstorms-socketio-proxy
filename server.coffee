@@ -1,6 +1,11 @@
 http = require 'http'
 fs = require 'fs'
 
+Nxt = require("mindstorms_bluetooth").Nxt;
+
+nxt = new Nxt("/dev/tty.NXT-DevB")
+nxt.play_tone(440, 1000)
+
 BASE = "#{process.env['HOME']}/Dropbox/L4RP/"
 requestHandler = (req, res) ->
   res.writeHead 200
@@ -31,3 +36,11 @@ server.listen 8080
 
 io.sockets.on 'connection', (socket) ->
   socket.emit 'welcome'
+
+  functions = ['play_tone', 'set_output_state']
+
+  for func in functions
+    do (func) ->
+      socket.on func, (args...) ->
+        console.log func, args.join(",")
+        nxt[func].apply(nxt, args)
