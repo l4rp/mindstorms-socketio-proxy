@@ -34,10 +34,11 @@ server = http.createServer requestHandler
 io = require('socket.io').listen(server)
 server.listen 8080
 
+functions = (key for key of nxt when typeof nxt[key] is 'function' and key.match /^[a-z_]+$/)
+console.log "Exporting functions: #{functions.join(", ")}"
+
 io.sockets.on 'connection', (socket) ->
   socket.emit 'welcome'
-
-  functions = ['play_tone', 'set_output_state']
 
   for func in functions
     do (func) ->
